@@ -67,6 +67,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "graphene_django"
 ]
 
 LOCAL_APPS = [
@@ -75,6 +76,14 @@ LOCAL_APPS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+
+# GRAPHENE
+# ------------------------------------------------------------------------------
+# https://stackabuse.com/building-a-graphql-api-with-django/
+GRAPHENE = {
+    'SCHEMA': 'singularity.schema.schema'
+}
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------

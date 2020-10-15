@@ -4,7 +4,7 @@ Singularity
 Power Flow Calculator
 
 Scalable and tested backend that makes use of Panda Power https://github.com/e2nIEE/pandapower
-Calculates power flow and represents it through RESTful Api using DRF
+Calculates power flow and represents it through RESTful Api using DRF and graphql api using graphene
 
 The main app lies inside backend_engineer_hassan/singularity/flow_app
 
@@ -65,3 +65,24 @@ There are 3 Endpoints , you can navigate them by the browser UI on the urls :
 
 ``GET : /api/flow/reactive`` This will get from cache or db if unavailable the last calculated reactive power value
 
+``GET : /graphql/`` Graphql interface
+
+.. code-block:: python
+
+        mutation {
+              calculatePower {
+                active
+                reactive
+              }
+            }
+
+        query {
+            getActive {
+                value
+                }
+            }
+        query {
+            getReactive {
+                value
+                }
+            }

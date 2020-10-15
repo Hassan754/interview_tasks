@@ -33,7 +33,7 @@ class FlowCalculatorViewSet(CreateModelMixin, GenericViewSet):
         serializer = self.get_serializer(data={"active_power": active, "reactive_power": reactive})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        
+
         # Set Cache
         cache.set("active", active)
         cache.set("reactive", reactive)
@@ -51,7 +51,7 @@ class FlowCalculatorViewSet(CreateModelMixin, GenericViewSet):
             obj = FlowCalculatorViewSet.get_recent_calculation()
             value = obj.active_power if obj else None
 
-        data = {"value": value} if obj else {"message": _("Active power is not available")}
+        data = {"value": value} if value else {"message": _("Active power is not available")}
 
         return Response(status=status.HTTP_200_OK, data=data)
 
@@ -65,6 +65,6 @@ class FlowCalculatorViewSet(CreateModelMixin, GenericViewSet):
             obj = FlowCalculatorViewSet.get_recent_calculation()
             value = obj.reactive_power if obj else None
 
-        data = {"value": value} if obj else {"message": _("Reactive power is not available")}
+        data = {"value": value} if value else {"message": _("Reactive power is not available")}
 
         return Response(status=status.HTTP_200_OK, data=data)
