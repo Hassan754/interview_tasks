@@ -1,4 +1,5 @@
 import pytest
+from django.core.cache import cache
 from rest_framework import status
 from rest_framework.reverse import reverse
 
@@ -30,7 +31,7 @@ class TestFlowViewSet:
             response = api_client().get(reverse(url_name))
 
         assert response.status_code == status.HTTP_200_OK
-        assert obj1.active_power == response.data['active_power']
+        assert obj1.active_power == response.data['value']
 
     def test_flow_reactive(self, api_client, django_assert_num_queries):
         url_name = "api:flow_app:flow-reactive"
@@ -41,7 +42,7 @@ class TestFlowViewSet:
             response = api_client().get(reverse(url_name))
 
         assert response.status_code == status.HTTP_200_OK
-        assert obj1.reactive_power == response.data['reactive_power']
+        assert obj1.reactive_power == response.data['value']
 
     def test_flow_create(self, api_client, django_assert_num_queries):
         url_name = "api:flow_app:flow-list"
@@ -51,3 +52,5 @@ class TestFlowViewSet:
             response = api_client().post(reverse(url_name))
         assert FlowCalculation.objects.count() == 1
         assert response.status_code == status.HTTP_201_CREATED
+
+        assert cache.get("active") is not None

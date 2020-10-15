@@ -13,6 +13,7 @@ services:
     container_name: django
     depends_on:
       - postgres
+      - redis
     volumes:
       - .:/app:z
     env_file:
@@ -34,17 +35,5 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: singularity_local_docs
-    container_name: docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./singularity:/app/singularity:z
-    ports:
-      - "7000:7000"
+  redis:
+    image: redis:5.0

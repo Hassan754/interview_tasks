@@ -5,6 +5,10 @@ from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from django.core.cache import cache
+
+from django.utils.translation import gettext_lazy as _
+
 from .. import test_sim
 from ..models import FlowCalculation
 
@@ -29,6 +33,11 @@ class FlowCalculatorViewSet(CreateModelMixin, GenericViewSet):
         serializer = self.get_serializer(data={"active_power": active, "reactive_power": reactive})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        
+        # Set Cache
+        cache.set("active", active)
+        cache.set("reactive", reactive)
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -37,13 +46,25 @@ class FlowCalculatorViewSet(CreateModelMixin, GenericViewSet):
         """
         Returns the active power value from the last calculation
         """
-        obj = FlowCalculatorViewSet.get_recent_calculation()
-        return Response(status=status.HTTP_200_OK, data={"active_power": obj.active_power})
+        value = cache.get("active")
+        if not value:
+            obj = FlowCalculatorViewSet.get_recent_calculation()
+            value = obj.active_power if obj else None
+
+        data = {"value": value} if obj else {"message": _("Active power is not available")}
+
+        return Response(status=status.HTTP_200_OK, data=data)
 
     @action(detail=False, methods=["GET"], url_path="reactive", url_name="reactive")
     def reactive(self, request):
         """
         Returns the reactive power value from the last calculation
         """
-        obj = FlowCalculatorViewSet.get_recent_calculation()
-        return Response(status=status.HTTP_200_OK, data={"reactive_power": obj.reactive_power})
+        value = cache.get("reactive")
+        if not value:
+            obj = FlowCalculatorViewSet.get_recent_calculation()
+            value = obj.reactive_power if obj else None
+
+        data = {"value": value} if obj else {"message": _("Reactive power is not available")}
+
+        return Response(status=status.HTTP_200_OK, data=data)

@@ -6,6 +6,8 @@ Power Flow Calculator
 Scalable and tested backend that makes use of Panda Power https://github.com/e2nIEE/pandapower
 Calculates power flow and represents it through RESTful Api using DRF
 
+The main app lies inside backend_engineer_hassan/singularity/flow_app
+
 Basic Commands
 --------------
 
@@ -57,9 +59,9 @@ Using the Api
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 There are 3 Endpoints , you can navigate them by the browser UI on the urls :
 
-``POST : /api/flow/`` This will trigger the calculation , save the values in db and return the response
+``POST : /api/flow/`` Click "POST" button. This will trigger the calculation , save the values in db + cache them and return the response
 
-``GET : /api/flow/active`` This will get from db the last calculated active power value
+``GET : /api/flow/active`` This will get from cache or db if unavailable the last calculated active power value
 
-``GET : /api/flow/reactive`` This will get from db the last calculated reactive power value
+``GET : /api/flow/reactive`` This will get from cache or db if unavailable the last calculated reactive power value
 

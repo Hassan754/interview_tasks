@@ -46,9 +46,6 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
-            </li>
           </ul>
         </div>
       </nav>
@@ -65,6 +62,12 @@
 
       {% block content %}
         <p>Singularity Power flow Calculator</p>
+        <p>Visit the Urls :</p>
+        <ul>
+        <li>/api/flow/</li>
+        <li>/api/flow/active</li>
+        <li>/api/flow/reactive</li>
+        </ul>
       {% endblock content %}
 
     </div> <!-- /container -->
